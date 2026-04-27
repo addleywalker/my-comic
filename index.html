@@ -8,7 +8,7 @@
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Courier+Prime&display=swap');
 
     :root {
-      --bg: #f5f0e8;
+      --bg: ##ffffff;
       --ink: #1a1208;
       --accent: #c0392b;
       --panel-max: 720px;
@@ -155,11 +155,7 @@
 </head>
 <body>
 
-  <header>
-    <h1>Your Comic <em>Title</em></h1>
-    <p class="subtitle">A scroll comic by Your Name</p>
-    <div class="divider"></div>
-  </header>
+
 
   <main id="comic">
 
@@ -203,13 +199,8 @@
 
   </main>
 
-  <footer>
-    &copy; <span id="yr"></span> Your Name &mdash; all rights reserved
-  </footer>
-
+ 
   <script>
-    // Auto-fill copyright year
-    document.getElementById('yr').textContent = new Date().getFullYear();
 
     // Fade panels in as they scroll into view
     const panels = document.querySelectorAll('.panel');
