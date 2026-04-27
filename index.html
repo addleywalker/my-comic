@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Scroll Comic</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Courier+Prime&display=swap');
+
+    :root {
+      --bg: #f5f0e8;
+      --ink: #1a1208;
+      --accent: #c0392b;
+      --panel-max: 720px;
+      --panel-gap: 2px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--ink);
+      font-family: 'Courier Prime', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ── Header ── */
+    header {
+      width: 100%;
+      max-width: var(--panel-max);
+      padding: 3rem 1rem 1.5rem;
+      text-align: center;
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    header h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    header p.subtitle {
+      margin-top: 0.6rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: var(--ink);
+      margin: 1.2rem auto 0;
+    }
+
+    /* ── Comic strip ── */
+    main {
+      width: 100%;
+      max-width: var(--panel-max);
+      padding: 2rem 0 4rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--panel-gap);
+    }
+
+    /* Each panel is a full-width image */
+    .panel {
+      width: 100%;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .panel.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .panel img {
+      width: 100%;
+      height: auto;
+      display: block;
+      /* Crisp rendering for pixel-art comics; remove if using photos */
+      image-rendering: auto;
+    }
+
+    /* Placeholder shown when no real image is loaded */
+    .panel .placeholder {
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      background: #e8e2d6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      color: #aaa49a;
+      border: 1px solid #d4cec4;
+    }
+
+    /* ── Footer ── */
+    footer {
+      width: 100%;
+      max-width: var(--panel-max);
+      padding: 2rem 1rem;
+      text-align: center;
+      border-top: 1px solid #c8c2b4;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.45;
+    }
+
+    /* ── Mobile adjustments ── */
+    @media (max-width: 740px) {
+      /* On small screens, panels fill the full viewport width */
+      main {
+        max-width: 100%;
+        padding: 0.5rem 0 3rem;
+        gap: 1px;
+      }
+
+      header {
+        max-width: 100%;
+        padding: 2rem 1.2rem 1.2rem;
+      }
+
+      footer {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Your Comic <em>Title</em></h1>
+    <p class="subtitle">A scroll comic by Your Name</p>
+    <div class="divider"></div>
+  </header>
+
+  <main id="comic">
+
+    <!--
+      HOW TO ADD YOUR PANELS
+      ======================
+      Replace each <div class="panel placeholder"> block below with:
+
+        <div class="panel">
+          <img src="images/panel-01.jpg" alt="Brief description of this panel" />
+        </div>
+
+      Put your image files in a folder called "images/" next to this file.
+      Supported formats: .jpg, .png, .gif, .webp
+
+      Tip: aim for images around 1440px wide at most —
+      that keeps file sizes small while looking sharp on all screens.
+
+      Add or remove <div class="panel"> blocks to match your page count.
+    -->
+
+    <div class="panel">
+      <div class="placeholder">panel 01 — replace with your image</div>
+    </div>
+
+    <div class="panel">
+      <div class="placeholder">panel 02 — replace with your image</div>
+    </div>
+
+    <div class="panel">
+      <div class="placeholder">panel 03 — replace with your image</div>
+    </div>
+
+    <div class="panel">
+      <div class="placeholder">panel 04 — replace with your image</div>
+    </div>
+
+    <div class="panel">
+      <div class="placeholder">panel 05 — replace with your image</div>
+    </div>
+
+  </main>
+
+  <footer>
+    &copy; <span id="yr"></span> Your Name &mdash; all rights reserved
+  </footer>
+
+  <script>
+    // Auto-fill copyright year
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    // Fade panels in as they scroll into view
+    const panels = document.querySelectorAll('.panel');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target); // animate once only
+          }
+        });
+      },
+      { threshold: 0.08 }
+    );
+    panels.forEach(p => observer.observe(p));
+  </script>
+
+</body>
+</html>
